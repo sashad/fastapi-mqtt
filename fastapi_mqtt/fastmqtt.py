@@ -176,7 +176,7 @@ class FastMQTT:
             log_info.debug('Calling user_message_handler')
             gather.append(
                 self.mqtt_handlers.get_user_message_handler(
-                    client, topic, payload, qos, properties
+                    client, topic, payload, qos, properties, self.client._connect_properties
                 )
             )
 
@@ -185,7 +185,7 @@ class FastMQTT:
                 log_info.debug(f'Calling specific handler for topic {topic}')
                 for handler in self.handlers[topic_template]:
                     gather.append(
-                        handler(client, topic, payload, qos, properties)
+                        handler(client, topic, payload, qos, properties, self.client._connect_properties)
                     )
 
         return await asyncio.gather(*gather)
